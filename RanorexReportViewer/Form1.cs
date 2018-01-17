@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Diagnostics;
 
 namespace RanorexReportViewer
 {
@@ -15,11 +16,13 @@ namespace RanorexReportViewer
     {
         private string _defaultReportPath = @".\TestReprot\";
         private List<string> _reports = new List<string>();
+        private string _cef = @".\CEF\CEF.exe";
         private int _depth = 0;
         public Form1()
         {
             InitializeComponent();
             loadAllReports(_defaultReportPath);
+            openReport(transformReportToHtml(_reports[0]));
         }
         private void loadAllReports(string path)
         {
@@ -43,6 +46,38 @@ namespace RanorexReportViewer
                     loadAllReports(d);
                 }
             }
+        }
+
+        private string transformReportToHtml(string reportPath)
+        {
+            string htmlPath = "";
+            try
+            {
+                FileInfo report = new FileInfo(reportPath);
+
+                if (report.FullName.EndsWith("rxlog"))
+                {
+                    htmlPath = report.FullName.Replace("rxlog", "html");
+                    File.Copy(reportPath, htmlPath,true);
+                }
+                else
+                {
+                }
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.Message+"\r\n"+e.StackTrace);
+            }
+
+            return htmlPath;
+        }
+
+        private void openReport(string reportPath)
+        {
+            Process p = new Process();
+            p.StartInfo.FileName = _cef;
+            p.StartInfo.Arguments = @"/url='"+reportPath+ "' --allow-file-access-from-files";
+            p.Start();
         }
     }
 }
