@@ -14,9 +14,9 @@ namespace RanorexReportViewer
 {
     public partial class Form1 : Form
     {
-        private string _defaultReportPath = @".\TestReprot\";
+        private string _defaultReportPath = Application.StartupPath + @"\TestReprot\";
         private List<string> _reports = new List<string>();
-        private string _cef = @".\CEF\CEF.exe";
+        private string _cef = Application.StartupPath + @"\..\CEF\CEF.exe";
         private int _depth = 0;
         public Form1()
         {
@@ -58,15 +58,16 @@ namespace RanorexReportViewer
                 if (report.FullName.EndsWith("rxlog"))
                 {
                     htmlPath = report.FullName.Replace("rxlog", "html");
-                    File.Copy(reportPath, htmlPath,true);
+                    File.Copy(reportPath, htmlPath, true);
+                    File.Copy(reportPath + ".data", htmlPath + ".data", true);
                 }
                 else
                 {
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                throw new Exception(e.Message+"\r\n"+e.StackTrace);
+                throw new Exception(e.Message + "\r\n" + e.StackTrace);
             }
 
             return htmlPath;
@@ -76,7 +77,7 @@ namespace RanorexReportViewer
         {
             Process p = new Process();
             p.StartInfo.FileName = _cef;
-            p.StartInfo.Arguments = @"/url='"+reportPath+ "' --allow-file-access-from-files";
+            p.StartInfo.Arguments = "/url=\"" + reportPath + "\" --allow-file-access-from-files";
             p.Start();
         }
     }
