@@ -1,2 +1,7 @@
 
+RanorexReportViewer/bin/*
 RanorexReportViewer/bin/Debug/*
+RanorexReportViewer/obj/*
+.vs/RanorexReportViewer/v15/.suo
+RanorexReportViewer/obj/Debug/RanorexReportViewer.pdb
+RanorexReportViewer/obj/Debug/RanorexReportViewer.csprojResolveAssemblyReference.cache
